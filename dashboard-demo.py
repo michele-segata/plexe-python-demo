@@ -105,7 +105,7 @@ class Tachometer:
 
 def run_application(application, setter):
     a = importlib.import_module(application)
-    a.main(True, setter)
+    a.main(True, True, setter)
 
 
 class Dashboard(QtGui.QWidget):

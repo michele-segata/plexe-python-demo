@@ -21,7 +21,7 @@ import sys
 import ccparams as cc
 import random
 from utils import add_vehicle, set_par, change_lane, communicate, \
-    get_distance, get_par
+    get_distance, get_par, start_sumo, running
 
 if 'SUMO_HOME' in os.environ:
     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
@@ -54,7 +54,7 @@ JOINER = "v.%d" % N_VEHICLES
 
 # sumo launch command
 sumoBinary = "sumo-gui"
-sumoCmd = [sumoBinary, "-c", "cfg/freeway.sumo.cfg"]
+sumoCmd = [sumoBinary, "-D", "-c", "cfg/freeway.sumo.cfg"]
 
 
 def add_vehicles(n, real_engine=False):
@@ -150,14 +150,22 @@ def reset_leader(vid, topology, n):
     return topology
 
 
-def main(real_engine, setter=None):
+def main(demo_mode, real_engine, setter=None):
     # used to randomly color the vehicles
     random.seed(1)
-    traci.start(sumoCmd)
+    start_sumo("cfg/freeway.sumo.cfg", False)
     step = 0
     state = GOING_TO_POSITION
-    while step < 6000:
+    while running(demo_mode, step, 6000):
+
+        # when reaching 60 seconds, reset the simulation when in demo_mode
+        if demo_mode and step == 6000:
+            start_sumo("cfg/freeway.sumo.cfg", True)
+            step = 0
+            random.seed(1)
+
         traci.simulationStep()
+
         if step == 0:
             # create vehicles and track the joiner
             topology = add_vehicles(N_VEHICLES, real_engine)
@@ -200,4 +208,4 @@ def main(real_engine, setter=None):
 
 
 if __name__ == "__main__":
-    main(False)
+    main(True, True)

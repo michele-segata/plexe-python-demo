@@ -22,7 +22,8 @@ import os
 import sys
 import ccparams as cc
 import random
-from utils import add_vehicle, set_par, change_lane, get_par
+from utils import add_vehicle, set_par, change_lane, get_par, start_sumo, \
+    running
 
 if 'SUMO_HOME' in os.environ:
     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
@@ -57,11 +58,19 @@ def add_vehicles():
         set_par(vid, cc.PAR_FIXED_ACCELERATION, cc.pack(1, 0))
 
 
-def main(real_engine=True, setter=None):
+def main(demo_mode, real_engine=True, setter=None):
     random.seed(1)
-    traci.start(sumoCmd)
+    start_sumo("cfg/freeway.sumo.cfg", False)
     step = 0
-    while step < 100000:
+
+    while running(demo_mode, step, 4000):
+
+        # when reaching 60 seconds, reset the simulation when in demo_mode
+        if demo_mode and step == 4000:
+            start_sumo("cfg/freeway.sumo.cfg", True)
+            step = 0
+            random.seed(1)
+
         traci.simulationStep()
         if step == 0:
             # create vehicles and track one of them
@@ -88,4 +97,4 @@ def main(real_engine=True, setter=None):
 
 
 if __name__ == "__main__":
-    main()
+    main(True, True)

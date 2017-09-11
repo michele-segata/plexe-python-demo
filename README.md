@@ -22,6 +22,9 @@ and
 python enginedemo.py
 ```
 
+After running for a certain amount of time, both demo resets and
+automatically start from scratch (demo mode).
+
 Alternatively, you can run them together with a dashboard, which shows
 the RPM, the speed, the gear, and the acceleration of the vehicle being
 tracked in the GUI. By tracking a different vehicle, the dashboard shows

@@ -131,3 +131,36 @@ def communicate(topology):
         f_d = get_distance(vid, links["front"])
         set_par(vid, cc.PAR_LEADER_FAKE_DATA, cc.pack(l_v, l_u))
         set_par(vid, cc.PAR_FRONT_FAKE_DATA, cc.pack(f_v, f_u, f_d))
+
+
+def start_sumo(config_file, already_running):
+    """
+    Starts or restarts sumo with the given configuration file
+    :param config_file: sumo configuration file
+    :param already_running: if set to true then the command simply reloads
+    the given config file, otherwise sumo is started from scratch
+    """
+    arguments = ["-c"]
+    sumo_cmd = ["sumo-gui"]
+    arguments.append(config_file)
+    if already_running:
+        traci.load(arguments)
+    else:
+        sumo_cmd.extend(arguments)
+        traci.start(sumo_cmd)
+
+
+def running(demo_mode, step, max_step):
+    """
+    Returns whether the demo should continue to run or not. If demo_mode is
+    set to true, the demo should run indefinitely, so the function returns
+    true. Otherwise, the function returns true only if step <= max_step
+    :param demo_mode: true if running in demo mode
+    :param step: current simulation step
+    :param max_step: maximum simulation step
+    :return: true if the simulation should continue
+    """
+    if demo_mode:
+        return True
+    else:
+        return step <= max_step
