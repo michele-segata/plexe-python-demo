@@ -104,7 +104,10 @@ def unpack(string):
         value = value.replace(ESC + ESC, ESC)
         value = value.replace(ESC + SEP, SEP)
         try:
-            ret.append(eval(e))
-        except NameError:
-            ret.append(e)
+            ret.append(int(value))
+        except ValueError:
+            try:
+                ret.append(float(value))
+            except ValueError:
+                ret.append(value)
     return ret
