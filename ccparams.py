@@ -67,19 +67,42 @@ PAR_ACC_HEADWAY_TIME = "ccaht"
 PAR_ENGINE_DATA = "cced"
 
 SEP = ':'
+ESC = '\\'
 
 
 def pack(*args):
     a = []
     for arg in args:
-        a.append(str(arg));
+        esc = str(arg).replace(ESC, ESC + ESC)
+        esc = esc.replace(SEP, ESC + SEP)
+        a.append(esc)
     return SEP.join(a)
 
 
+def _next(string):
+    sep = -1
+    while True:
+        sep = string.find(SEP, sep + 1)
+        if sep == -1 or sep == 0 or string[(sep-1):sep] != ESC:
+            break
+
+    if sep == -1:
+        next_string = string
+        string = ""
+    else:
+        next_string = string[0:sep]
+        string = string[(sep+1):]
+    return next_string, string
+
+
 def unpack(string):
-    a = string.split(SEP)
     ret = list()
-    for e in a:
+    while True:
+        value, string = _next(string)
+        if value == "" and string == "":
+            break
+        value = value.replace(ESC + ESC, ESC)
+        value = value.replace(ESC + SEP, SEP)
         try:
             ret.append(eval(e))
         except NameError:
