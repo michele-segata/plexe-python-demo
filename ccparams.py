@@ -68,6 +68,7 @@ PAR_ENGINE_DATA = "cced"
 
 SEP = ':'
 ESC = '\\'
+QUO = '"'
 
 
 def pack(*args):
@@ -75,6 +76,8 @@ def pack(*args):
     for arg in args:
         esc = str(arg).replace(ESC, ESC + ESC)
         esc = esc.replace(SEP, ESC + SEP)
+        if esc == "" or (esc[0] == QUO and esc[-1] == QUO):
+            esc = QUO + esc + QUO
         a.append(esc)
     return SEP.join(a)
 
@@ -103,6 +106,8 @@ def unpack(string):
             break
         value = value.replace(ESC + ESC, ESC)
         value = value.replace(ESC + SEP, SEP)
+        if value[0] == QUO and value[-1] == QUO:
+            value = value[1:-1]
         try:
             ret.append(int(value))
         except ValueError:
