@@ -162,6 +162,7 @@ def main(demo_mode, real_engine, setter=None):
         if demo_mode and step == 6000:
             start_sumo("cfg/freeway.sumo.cfg", True)
             step = 0
+            state = GOING_TO_POSITION
             random.seed(1)
 
         traci.simulationStep()
