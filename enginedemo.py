@@ -31,9 +31,10 @@ if 'SUMO_HOME' in os.environ:
 else:
     sys.exit("please declare environment variable 'SUMO_HOME'")
 import traci
+import sumolib
 
 # sumo launch command
-sumoBinary = "sumo-gui"
+sumoBinary = sumolib.checkBinary('sumo-gui')
 sumoCmd = [sumoBinary, "-c", "cfg/freeway.sumo.cfg"]
 
 

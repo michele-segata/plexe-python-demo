@@ -25,6 +25,8 @@ if 'SUMO_HOME' in os.environ:
     sys.path.append(tools)
 else:
     sys.exit("please declare environment variable 'SUMO_HOME'")
+
+import sumolib
 import traci
 
 
@@ -104,7 +106,7 @@ def get_distance(v1, v2):
     (v, a, u, x1, y1, t) = cc.unpack(v_data)
     v_data = get_par(v2, cc.PAR_SPEED_AND_ACCELERATION)
     (v, a, u, x2, y2, t) = cc.unpack(v_data)
-    return math.sqrt((x1-x2)**2 + (y1-y2)**2) - 4
+    return math.sqrt((x1 - x2)**2 + (y1 - y2)**2) - 4
 
 
 def communicate(topology):
@@ -141,7 +143,7 @@ def start_sumo(config_file, already_running):
     the given config file, otherwise sumo is started from scratch
     """
     arguments = ["-c"]
-    sumo_cmd = ["sumo-gui"]
+    sumo_cmd = [sumolib.checkBinary('sumo-gui')]
     arguments.append(config_file)
     if already_running:
         traci.load(arguments)

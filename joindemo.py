@@ -28,6 +28,9 @@ if 'SUMO_HOME' in os.environ:
     sys.path.append(tools)
 else:
     sys.exit("please declare environment variable 'SUMO_HOME'")
+
+import sumolib
+
 import traci
 
 # vehicle length
@@ -37,7 +40,7 @@ DISTANCE = 5
 # inter-vehicle distance when leaving space for joining
 JOIN_DISTANCE = DISTANCE * 2
 # cruising speed
-SPEED = 130/3.6
+SPEED = 130 / 3.6
 
 # maneuver states:
 GOING_TO_POSITION = 0
@@ -53,7 +56,7 @@ N_VEHICLES = 8
 JOINER = "v.%d" % N_VEHICLES
 
 # sumo launch command
-sumoBinary = "sumo-gui"
+sumoBinary = sumolib.checkBinary('sumo-gui')
 sumoCmd = [sumoBinary, "-D", "-c", "cfg/freeway.sumo.cfg"]
 
 
@@ -73,7 +76,7 @@ def add_vehicles(n, real_engine=False):
     topology = {}
     for i in range(n):
         vid = "v.%d" % i
-        add_vehicle(vid, (n-i+1)*(DISTANCE+LENGTH) + 50, 0, SPEED, DISTANCE,
+        add_vehicle(vid, (n - i + 1) * (DISTANCE + LENGTH) + 50, 0, SPEED, DISTANCE,
                     real_engine)
         change_lane(vid, 0)
         if i == 0:
