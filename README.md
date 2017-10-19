@@ -40,10 +40,10 @@ and
 python dashboard-demo.py enginedemo.py
 ```
 
-Running the dashboard requires you to install `PyQT4`. These demos
+Running the dashboard requires you to install `PyQT5`. These demos
 currently work with the latest experimental version of Plexe SUMO, which
 can be downloaded [here](https://github.com/michele-segata/sumo).
-Checkout and compile the `plexe-planetsumo-0.30.0` branch.
+Checkout and compile the `plexe-planetsumo-0.31.0` branch.
 
 For more information on Plexe, visit
 [http://plexe.car2x.org](http://plexe.car2x.org).

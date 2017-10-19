@@ -17,7 +17,7 @@
 #
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 import threading
 import importlib
 from os.path import splitext
@@ -108,7 +108,7 @@ def run_application(application, setter):
     a.main(True, True, setter)
 
 
-class Dashboard(QtGui.QWidget):
+class Dashboard(QtWidgets.QWidget):
 
     def __init__(self, demo_app, parent=None):
 
@@ -148,12 +148,12 @@ class Dashboard(QtGui.QWidget):
         self.acc_meter.set_min_max_degrees(0.0, 180.0)
         self.acc_meter.set_value(0.0)
 
-        self.gear = QtGui.QLCDNumber(1, self)
+        self.gear = QtWidgets.QLCDNumber(1, self)
         self.gear.setGeometry(325, 25, 50, 100)
         palette = self.gear.palette()
         palette.setColor(palette.WindowText, QtGui.QColor(180, 0, 0))
         self.gear.setPalette(palette)
-        self.gear.setSegmentStyle(QtGui.QLCDNumber.Flat)
+        self.gear.setSegmentStyle(QtWidgets.QLCDNumber.Flat)
 
         self.child = threading.Thread(target=run_application,
                                       args=(demo_app, self.set_values,))
@@ -187,7 +187,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: %s <demo application>" % sys.argv[0])
         sys.exit(1)
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     dashboard = Dashboard(splitext(sys.argv[1])[0])
     dashboard.show()
     sys.exit(app.exec_())
