@@ -92,7 +92,7 @@ def add_vehicle(vid, position, lane, speed, cacc_spacing, real_engine=False):
         set_par(vid, cc.CC_PAR_VEHICLE_MODEL, "alfa-147")
     traci.vehicle.setColor(vid, (random.uniform(0, 255),
                                  random.uniform(0, 255),
-                                 random.uniform(0, 255), 0))
+                                 random.uniform(0, 255), 255))
 
 
 def get_distance(v1, v2):
